@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Virtual Kanomchan</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <script src="TemplateData/UnityProgress.js"></script>
+    <script src="Build/UnityLoader.js"></script>
+    <script>
+      var gameInstance = UnityLoader.instantiate("gameContainer", "Build/VK Build.json", {onProgress: UnityProgress});
+    </script>
+  </head>
+  <body>
+    <div class="webgl-content">
+      <div id="gameContainer" style="width: 1280px; height: 720px"></div>
+      <div class="footer"></div>
+    </div>
+
+    <p id="Movement">0</p>
+    <p id="Speed">0</p>
+    <p id="Linear">0</p>
+    <p id="Angular">0</p>
+    <p id="TextRun"></p>
+    <p id="ImageBase64"></p>
+
+    <script src="TemplateData/responsive.javascript"></script>
+    <script>
+        var x = 0;
+        var delay = 3000;
+        function TimeDelay()
+        {
+          delay = 99999999;
+        }
+        setInterval(TimeDelay,delay);
+        setInterval(RunTime,1);
+
+        /// Send to VK <---
+        function msgMovement(value) 
+        {
+          return (gameInstance.SendMessage("CameraVK","KanomchanMovement",value));
+        }
+        function msgSpeed(value) 
+        {
+          return (gameInstance.SendMessage("CameraVK","KanomchanSpeed",value));
+        }
+        function msgLinear(value) 
+        {
+          return (gameInstance.SendMessage("CameraVK","KanomchanLinearDirec",value));
+        }
+        function msgAngular(value) 
+        {
+          return (gameInstance.SendMessage("CameraVK","KanomchanAngularDirec",value));
+        }
+        /// Send from VK --->
+
+        function Call_RunProgram(value)
+        {
+          x = value;
+          document.getElementById("TextRun").innerHTML = value;
+        }
+        function ImageStream(value)
+        {
+          document.getElementById("ImageBase64").innerHTML = value;
+        }
+        function RunTime()
+        {
+          if(x == 1)
+          {
+            msgMovement(document.getElementById("Movement").innerText); 
+            msgSpeed(document.getElementById("Speed").innerText); 
+            msgLinear(document.getElementById("Linear").innerText); 
+            msgAngular(document.getElementById("Angular").innerText); 
+          }
+        }
+
+    </script>
+  </body>
+</html>
